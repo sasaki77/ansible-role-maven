@@ -1,0 +1,13 @@
+- name: check maven exists
+  stat: path={{maven_name}}
+  register: maven_exists
+
+- name: download and unarchive maven
+  unarchive: 
+    src: "{{ maven_download_url }}"
+    dest: "{{ maven_download_folder }}"
+    remote_src: True
+    owner: root
+    group: root
+  when: not maven_exists.stat.exists
+  become: true
